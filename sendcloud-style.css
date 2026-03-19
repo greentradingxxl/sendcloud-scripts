@@ -15,5 +15,5 @@ button[id^="ui-filter-"] {
 
 #ui-filter-status_filter-main-btn::after {
     content: "🔒";
-    margin-left: -5px;
+    margin-left: -6px;
 }
