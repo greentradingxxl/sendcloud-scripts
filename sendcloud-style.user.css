@@ -15,6 +15,6 @@
 
     #ui-filter-status_filter-main-btn::after {
         content: "🔒";
-        margin-left: -6px;
+        margin-left: -5px;
     }
 
