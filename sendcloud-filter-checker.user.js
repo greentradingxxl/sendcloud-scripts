@@ -12,36 +12,41 @@
         return window.location.pathname === '/v2/shipping/packgo/queue';
     }
 
-    function showWarning(statusSelected = [], paymentSelected = []) {
-        if (document.getElementById('filter-warning')) return;
+function showWarning(statusSelected = [], paymentSelected = []) {
+    if (document.getElementById('filter-warning')) return;
 
-        const isGerman =
-            [...statusSelected, ...paymentSelected].some(text =>
-                text.includes('verarbeitung') ||
-                text.includes('bezahlt')
-            );
+    const isGerman =
+        [...statusSelected, ...paymentSelected].some(text =>
+            text.includes('verarbeitung') ||
+            text.includes('bezahlt')
+        );
 
-        const warningText = isGerman
-            ? 'FILTER FALSCH - NICHT VERPACKEN\nShop-Status muss auf „Verarbeitung“ und „partial-shipped“ stehen, und Zahlungsstatus auf „Bezahlt”.'
-            : 'FILTERS VERKEERD - NIET INPAKKEN\nShop status moet op "Orders verwerken" en "partial-shipped", en Betaalstatus op "betaald".';
+    const warningText = isGerman
+        ? 'FILTER FALSCH - NICHT VERPACKEN\nShop-Status muss auf „Verarbeitung“ und „partial-shipped“ stehen, und Zahlungsstatus auf „Bezahlt”.'
+        : 'FILTERS VERKEERD - NIET INPAKKEN\nShop status moet op "Orders verwerken" en "partial-shipped", en Betaalstatus op "betaald".';
 
-        const warning = document.createElement('div');
-        warning.id = 'filter-warning';
-        warning.style.position = 'fixed';
-        warning.style.top = '0';
-        warning.style.left = '0';
-        warning.style.right = '0';
-        warning.style.background = 'red';
-        warning.style.color = 'white';
-        warning.style.padding = '20px';
-        warning.style.textAlign = 'center';
-        warning.style.zIndex = '99999';
-        warning.style.fontSize = '18px';
-        warning.style.fontWeight = 'bold';
-        warning.innerText = warningText;
+    const warning = document.createElement('div');
+    warning.id = 'filter-warning';
 
-        document.body.appendChild(warning);
-    }
+    // 👇 geen fixed meer
+    warning.style.background = 'red';
+    warning.style.color = 'white';
+    warning.style.padding = '12px';
+    warning.style.textAlign = 'center';
+    warning.style.fontSize = '24px';
+    warning.style.fontWeight = 'bold';
+    warning.style.marginBottom = '10px';
+    warning.style.borderRadius = '6px';
+
+    warning.innerText = warningText;
+
+    // 👇 injectiepunt zoeken (boven de orderlijst)
+    const target = document.querySelector('[data-test="packgo-queue"]')
+        || document.querySelector('main')
+        || document.body;
+
+    target.prepend(warning);
+}
 
     function removeWarning() {
         const warning = document.getElementById('filter-warning');
