@@ -6,7 +6,7 @@
 @updateURL    https://raw.githubusercontent.com/greentradingxxl/sendcloud-scripts/main/sendcloud-style.user.css
 ==/UserStyle== */
 
-
+@-moz-document url-prefix("https://app.sendcloud.com/v2/shipping/packgo/queue") {
 
     button[id^="ui-filter-"] {
         pointer-events: none;
@@ -15,6 +15,7 @@
 
     #ui-filter-status_filter-main-btn::after {
         content: "🔒";
-        margin-left: -5px;
+        margin-left: -6px;
     }
 
+}
