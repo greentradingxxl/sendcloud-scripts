@@ -1,3 +1,10 @@
+/* ==UserStyle==
+@name         Sendcloud Style
+@namespace    github.com/greentradingxxl
+@version      1.0.0
+@updateURL    https://raw.githubusercontent.com/greentradingxxl/sendcloud-scripts/main/sendcloud-style.css
+==/UserStyle== */
+
 button[id^="ui-filter-"] {
     pointer-events: none;
     opacity: 0.6;
