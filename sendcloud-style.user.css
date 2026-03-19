@@ -1,19 +1,21 @@
 /* ==UserStyle==
 @name         Sendcloud Style
 @namespace    github.com/greentradingxxl
-@version      1.0.2
+@version      1.0.4
 @description  Lock filters in Sendcloud
-@match        https://app.sendcloud.com/v2/shipping/packgo/queue*
 @updateURL    https://raw.githubusercontent.com/greentradingxxl/sendcloud-scripts/main/sendcloud-style.user.css
-@preprocessor default
 ==/UserStyle== */
 
-button[id^="ui-filter-"] {
-    pointer-events: none;
-    opacity: 0.6;
-}
+@-moz-document url-prefix("https://app.sendcloud.com/v2/shipping/packgo/queue") {
 
-#ui-filter-status_filter-main-btn::after {
-    content: "🔒";
-    margin-left: -6px;
+    button[id^="ui-filter-"] {
+        pointer-events: none;
+        opacity: 0.6;
+    }
+
+    #ui-filter-status_filter-main-btn::after {
+        content: "🔒";
+        margin-left: -6px;
+    }
+
 }
