@@ -1,10 +1,11 @@
 /* ==UserStyle==
 @name         Sendcloud Style
 @namespace    github.com/greentradingxxl
-@version      1.0.1
+@version      1.0.2
 @description  Lock filters in Sendcloud
 @match        https://app.sendcloud.com/v2/shipping/packgo/queue*
 @updateURL    https://raw.githubusercontent.com/greentradingxxl/sendcloud-scripts/main/sendcloud-style.css
+@preprocessor default
 ==/UserStyle== */
 
 button[id^="ui-filter-"] {
