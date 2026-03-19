@@ -1,0 +1,8 @@
+button[id^="ui-filter-"] {
+    pointer-events: none;
+    opacity: 0.6;
+}
+#ui-filter-status_filter-main-btn::after {
+    content: "🔒";
+    margin-left: -5px;
+}
