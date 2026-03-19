@@ -4,7 +4,7 @@
 @version      1.0.2
 @description  Lock filters in Sendcloud
 @match        https://app.sendcloud.com/v2/shipping/packgo/queue*
-@updateURL    https://raw.githubusercontent.com/greentradingxxl/sendcloud-scripts/main/sendcloud-style.css
+@updateURL    https://raw.githubusercontent.com/greentradingxxl/sendcloud-scripts/main/sendcloud-style.user.css
 @preprocessor default
 ==/UserStyle== */
 
