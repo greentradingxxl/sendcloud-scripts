@@ -1,6 +1,7 @@
 // ==UserScript==
 // @name         Sendcloud filter checker
 // @match        https://app.sendcloud.com/*
+// @version      1.0
 // @updateURL    https://raw.githubusercontent.com/greentradingxxl/sendcloud-scripts/main/sendcloud-filter-checker.user.js
 // @downloadURL  https://raw.githubusercontent.com/greentradingxxl/sendcloud-scripts/main/sendcloud-filter-checker.user.js
 // @grant        none
