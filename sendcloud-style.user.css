@@ -8,115 +8,89 @@
 
 @-moz-document url-prefix("https://app.sendcloud.com/v2/shipping/packgo/queue") {
 
-
-.collapsible-note {
-    color: #fff;
-    animation: knipper 0.7s infinite;
-}
-
-@keyframes knipper {
-    0%,100% { background:#e00000; }
-    50% { background:#ffffff; color:#e00000; }
-}
-
-
-.packgo-items__property {
-    color: #fff;
-    background: #ff0000;
-    font-weight: 700;
-    padding: 2px 6px;
-    border-radius: 4px;
-    animation: alertPulse 0.8s infinite;
-}
-
-@keyframes alertPulse {
-    0%   { transform: scale(1); }
-    50%  { transform: scale(1.08); }
-    100% { transform: scale(1); }
-}
-
-
-
-
-
-
-#packgo-order-split-switch-shipments {
-    animation: 
-        pulseRed 0.6s infinite,
-        flashRed 0.4s infinite,
-        shake 0.3s infinite;
-    border-radius: 6px;
-}
-
-/* Grote pulse */
-@keyframes pulseRed {
-    0% {
-        box-shadow: 0 0 0 0 rgba(255, 0, 0, 1);
-        transform: scale(1);
+    /* Klantopmerking knipperend */
+        
+    .collapsible-note {
+        color: #fff;
+        animation: knipper 0.7s infinite;
     }
-    50% {
-        box-shadow: 0 0 0 18px rgba(255, 0, 0, 0);
-        transform: scale(1.08);
+    @keyframes knipper {
+        0%,100% { background:#e00000; }
+        50% { background:#ffffff; color:#e00000; }
     }
-    100% {
-        box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
-        transform: scale(1);
+    .packgo-items__property {
+        color: #fff;
+        background: #ff0000;
+        font-weight: 700;
+        padding: 2px 6px;
+        border-radius: 4px;
+        animation: alertPulse 0.8s infinite;
     }
-}
+    @keyframes alertPulse {
+        0%   { transform: scale(1); }
+        50%  { transform: scale(1.08); }
+        100% { transform: scale(1); }
+    }
+    
+    
+    /* Split orders laten blinken */
+
+    #packgo-order-split-switch-shipments {
+        animation: 
+            pulseRed 0.6s infinite,
+            flashRed 0.4s infinite,
+            shake 0.3s infinite;
+        border-radius: 6px;
+    }
+    @keyframes pulseRed {
+        0% {
+            box-shadow: 0 0 0 0 rgba(255, 0, 0, 1);
+            transform: scale(1);
+        }
+        50% {
+            box-shadow: 0 0 0 18px rgba(255, 0, 0, 0);
+            transform: scale(1.08);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+            transform: scale(1);
+        }
+    }
+    @keyframes shake {
+        0% { transform: translate(0, 0); }
+        25% { transform: translate(-1px, 1px); }
+        50% { transform: translate(1px, -1px); }
+        75% { transform: translate(-1px, -1px); }
+        100% { transform: translate(0, 0); }
+    }
 
 
-
-/* Kleine shake voor extra irritatie */
-@keyframes shake {
-    0% { transform: translate(0, 0); }
-    25% { transform: translate(-1px, 1px); }
-    50% { transform: translate(1px, -1px); }
-    75% { transform: translate(-1px, -1px); }
-    100% { transform: translate(0, 0); }
-}
-
-
-
+    /* Product aantal laten knipperen als >1 is */
+    @keyframes pulseSubtiel {
+      0%   { opacity: 1; transform: scale(1); }
+      50%  { opacity: 0.85; transform: scale(1.08); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    
+    .packgo-items__quantity--large {
+      animation: pulseSubtiel 0.8s ease-in-out infinite;
+    }
 
 
+    /* Meldingen rood maken (Zoals order al verwerkt) */
+
+    .ui-alert--warning {
+        background-color: #ff4d4f !important; /* rood */
+        border-color: #ff4d4f !important;
+        color: #fff; /* optioneel voor betere leesbaarheid */
+    }
+    
+    .ui-alert--warning .ui-alert__icon {
+        color: #fff;
+    }
 
 
-
-
-/* Aantal laten knipperen als >1 is */
-@keyframes pulseSubtiel {
-  0%   { opacity: 1; transform: scale(1); }
-  50%  { opacity: 0.85; transform: scale(1.08); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
-.packgo-items__quantity--large {
-  animation: pulseSubtiel 0.8s ease-in-out infinite;
-}
-
-
-
-
-
-
-
-
-
-.ui-alert--warning {
-    background-color: #ff4d4f !important; /* rood */
-    border-color: #ff4d4f !important;
-    color: #fff; /* optioneel voor betere leesbaarheid */
-}
-
-.ui-alert--warning .ui-alert__icon {
-    color: #fff;
-}
-
-
-
-
-
-
+    /* Knoppen van filters blokkeren */
     
     button[id^="ui-filter-"] {
         pointer-events: none;
