@@ -88,26 +88,43 @@
     color: #fff;
     height:70px;
 }
-
 /* Rood */
 .md-modal button[hm-tap="cancel()"] {
     background-color: #dc3545;
     border: none;
     color: #fff;
 }
-
 /* Hover */
 .md-modal button[hm-tap="ok()"]:hover {
   background-color: #218838;
 }
-
 .md-modal button[hm-tap="cancel()"]:hover {
   background-color: #bb2d3b;
 }
-
 /* ===== TEKST CENTREREN ===== */
 .md-modal button h5 {
   width: 100%;
   text-align: center;
   color: #fff;
+}
+
+
+
+/* Logo gebruiken ipv Flour tekst */
+h1.ng-binding {
+  font-size: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h1.ng-binding::before {
+  content: "";
+  display: block;
+  width: 30%; /* schaal hier */
+  aspect-ratio: 530 / 146;
+  background-image: url("https://www.greentradingxxl.com/wp-content/uploads/2026/02/logo-footer.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
