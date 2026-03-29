@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Sendcloud → Order notes sync
 // @namespace    http://tampermonkey.net/
-// @version      1.1
+// @version      1.2
 // @description  Save + load order notes
 // @match        https://app.sendcloud.com/v2/shipping/packgo/queue*
 // @grant        none
