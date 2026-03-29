@@ -1,14 +1,22 @@
 // ==UserScript==
 // @name         Sendcloud → Order notes sync
 // @namespace    http://tampermonkey.net/
-// @version      1.2
+// @version      2.0
 // @description  Save + load order notes
-// @match        https://app.sendcloud.com/v2/shipping/packgo/queue*
+// @match        https://app.sendcloud.com/*
 // @grant        none
 // ==/UserScript==
 
 (function () {
     'use strict';
+
+    // 🔒 voorkomt dubbel laden
+    if (window.scNoteLoaded) return;
+    window.scNoteLoaded = true;
+
+    function isCorrectPage() {
+        return window.location.pathname === '/v2/shipping/packgo/queue';
+    }
 
     function showStatus(status, text, color = 'black', autoHide = false) {
         status.innerText = text;
@@ -22,7 +30,17 @@
         }
     }
 
-    function addUI() {
+    function removeUI() {
+        const existing = document.getElementById('sc-note-box');
+        if (existing) existing.remove();
+    }
+
+    function createUI() {
+        if (!isCorrectPage()) {
+            removeUI();
+            return;
+        }
+
         const table = document.querySelector('[data-test="packgo-items-table"]');
         if (!table) return;
 
@@ -79,16 +97,14 @@
                     return;
                 }
 
-                if (data.success) {
-                    textarea.value = data.note || '';
-                }
+                textarea.value = data.note || '';
 
             } catch (e) {
                 showStatus(status, 'Netwerk fout', 'red');
             }
         }
 
-        // 🔥 OPSLAAN
+        // 🔥 OPSLAAN (ook leeg = verwijderen)
         button.addEventListener('click', async () => {
             const note = textarea.value.trim();
 
@@ -114,7 +130,9 @@
                     return;
                 }
 
-                if (data.success) {
+                if (data.deleted) {
+                    showStatus(status, '✔️ Opmerking verwijderd', 'green', true);
+                } else if (data.success) {
                     showStatus(status, '✔️ Opgeslagen', 'green', true);
                 } else {
                     showStatus(status, 'Fout: ' + data.message, 'red');
@@ -135,5 +153,14 @@
         loadNote();
     }
 
-    setInterval(addUI, 800);
+    // 🔁 observer i.p.v. setInterval
+    const observer = new MutationObserver(() => {
+        createUI();
+    });
+
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+
 })();
