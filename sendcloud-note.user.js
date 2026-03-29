@@ -92,11 +92,6 @@
         button.addEventListener('click', async () => {
             const note = textarea.value.trim();
 
-            if (!note) {
-                showStatus(status, 'Vul iets in', 'red');
-                return;
-            }
-
             try {
                 const response = await fetch(
                     'https://www.greentradingxxl.com/wp-json/sendcloud-note/v1/save',
