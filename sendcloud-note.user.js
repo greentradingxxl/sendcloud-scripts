@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         Sendcloud → Order notes sync
 // @namespace    http://tampermonkey.net/
-// @version      2.0
+// @version      2.1
 // @description  Save + load order notes
 // @match        https://app.sendcloud.com/*
-// @grant        none
+// @grant        GM_xmlhttpRequest
+// @connect      www.greentradingxxl.com
 // ==/UserScript==
 
 (function () {
@@ -33,6 +34,34 @@
     function removeUI() {
         const existing = document.getElementById('sc-note-box');
         if (existing) existing.remove();
+    }
+
+    // Kleine wrapper om GM_xmlhttpRequest te laten lijken op fetch().then(r => r.json())
+    function gmFetchJson(method, url, body) {
+        return new Promise((resolve, reject) => {
+            GM_xmlhttpRequest({
+                method: method,
+                url: url,
+                headers: body ? { 'Content-Type': 'application/json' } : undefined,
+                data: body ? JSON.stringify(body) : undefined,
+                onload: function (response) {
+                    let data;
+                    try {
+                        data = JSON.parse(response.responseText);
+                    } catch (e) {
+                        reject(new Error('Ongeldig antwoord van server'));
+                        return;
+                    }
+                    resolve({ ok: response.status >= 200 && response.status < 300, status: response.status, data });
+                },
+                onerror: function () {
+                    reject(new Error('Netwerk fout'));
+                },
+                ontimeout: function () {
+                    reject(new Error('Timeout'));
+                }
+            });
+        });
     }
 
     function createUI() {
@@ -86,18 +115,15 @@
         // 🔥 NOTE OPHALEN
         async function loadNote() {
             try {
-                const response = await fetch(
-                    `https://www.greentradingxxl.com/wp-json/sendcloud-note/v1/get-note?orderNumber=${orderNumber}`
-                );
-
-                const data = await response.json();
+                const url = `https://www.greentradingxxl.com/wp-json/sendcloud-note/v1/get-note?orderNumber=${encodeURIComponent(orderNumber)}`;
+                const response = await gmFetchJson('GET', url);
 
                 if (!response.ok) {
-                    showStatus(status, data.message || 'Toegang geweigerd', 'red');
+                    showStatus(status, response.data.message || 'Toegang geweigerd', 'red');
                     return;
                 }
 
-                textarea.value = data.note || '';
+                textarea.value = response.data.note || '';
 
             } catch (e) {
                 showStatus(status, 'Netwerk fout', 'red');
@@ -109,33 +135,23 @@
             const note = textarea.value.trim();
 
             try {
-                const response = await fetch(
-                    'https://www.greentradingxxl.com/wp-json/sendcloud-note/v1/save',
-                    {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            orderNumber: orderNumber,
-                            note: note
-                        })
-                    }
-                );
-
-                const data = await response.json();
+                const url = 'https://www.greentradingxxl.com/wp-json/sendcloud-note/v1/save';
+                const response = await gmFetchJson('POST', url, {
+                    orderNumber: orderNumber,
+                    note: note
+                });
 
                 if (!response.ok) {
-                    showStatus(status, data.message || 'Toegang geweigerd', 'red');
+                    showStatus(status, response.data.message || 'Toegang geweigerd', 'red');
                     return;
                 }
 
-                if (data.deleted) {
+                if (response.data.deleted) {
                     showStatus(status, '✔️ Opmerking verwijderd', 'green', true);
-                } else if (data.success) {
+                } else if (response.data.success) {
                     showStatus(status, '✔️ Opgeslagen', 'green', true);
                 } else {
-                    showStatus(status, 'Fout: ' + data.message, 'red');
+                    showStatus(status, 'Fout: ' + response.data.message, 'red');
                 }
 
             } catch (e) {
